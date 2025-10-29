@@ -1,5 +1,5 @@
 # Use the Node.js 20 base image
-FROM node:20.13.1 AS base
+FROM node:22.14.0 AS base
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Production image
-FROM node:20.13.1
+FROM node:22.14.0
 
 WORKDIR /app
 
