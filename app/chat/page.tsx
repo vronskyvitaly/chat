@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 interface ChatMessage {
   id: string
@@ -30,6 +31,7 @@ type SocketMessage = WebSocketMessage | HistoryMessage
 
 const ChatPage = () => {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [isConnected, setIsConnected] = useState(false)
@@ -255,6 +257,10 @@ const ChatPage = () => {
     }
   }
 
+  const handleBackToHome = () => {
+    router.push('/')
+  }
+
   const formatTime = (timestamp: number) => {
     return new Date(timestamp).toLocaleTimeString('ru-RU', {
       hour: '2-digit',
@@ -294,6 +300,15 @@ const ChatPage = () => {
         <div className='flex items-center justify-between mb-4 p-4 bg-white rounded-lg shadow dark:bg-gray-800'>
           <h1 className='text-2xl font-bold text-black dark:text-zinc-50'>Chat Room</h1>
           <div className='flex items-center gap-4'>
+            <button
+              onClick={handleBackToHome}
+              className='flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors'
+            >
+              <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M15 19l-7-7 7-7' />
+              </svg>
+              <span className='text-sm font-medium'>Home</span>
+            </button>
             <div className='flex items-center gap-2'>
               <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
               <span className={`text-sm ${isConnected ? 'text-green-600' : 'text-red-600'}`}>
