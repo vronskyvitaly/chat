@@ -130,6 +130,7 @@ export default function ChatRoom() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const currentChatIdRef = useRef<string | null>(null)
   const connectionAttemptRef = useRef(0)
+  const processedMessageIds = useRef<Set<string>>(new Set())
 
   // Обработчик входящих сообщений
   const handleIncomingMessage = (data: WebSocketMessage) => {
@@ -138,7 +139,14 @@ export default function ChatRoom() {
     switch (data.type) {
       case 'history':
         if (data.history) {
-          setMessages(data.history || [])
+          // Очищаем отслеживаемые ID при загрузке новой истории
+          processedMessageIds.current.clear()
+          const newMessages = data.history || []
+          // Добавляем ID всех сообщений из истории в отслеживаемые
+          newMessages.forEach(msg => {
+            if (msg.id) processedMessageIds.current.add(msg.id)
+          })
+          setMessages(newMessages)
         }
         if (data.chatId) {
           currentChatIdRef.current = data.chatId
@@ -155,10 +163,21 @@ export default function ChatRoom() {
           data.receiverId === session?.user?.id ||
           data.senderId === session?.user?.id
         ) {
+          // Проверяем, не обрабатывали ли мы уже это сообщение
+          if (data.id && processedMessageIds.current.has(data.id)) {
+            console.log('🟡 Duplicate message detected, skipping:', data.id)
+            return
+          }
+
+          // Добавляем ID в обработанные
+          if (data.id) {
+            processedMessageIds.current.add(data.id)
+          }
+
           setMessages(prev => [
             ...prev,
             {
-              id: `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+              id: data.id || `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
               username: data.username,
               message: data.message,
               senderId: data.senderId,
@@ -217,7 +236,7 @@ export default function ChatRoom() {
           setMessages(prev => [
             ...prev,
             {
-              id: `system-${Date.now()}`,
+              id: `system-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
               isPrivate: false,
               username: 'System',
               message: data.message || `${data.username} в сети`,
@@ -246,7 +265,7 @@ export default function ChatRoom() {
           setMessages(prev => [
             ...prev,
             {
-              id: `system-${Date.now()}`,
+              id: `system-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
               isPrivate: false,
               username: 'System',
               message: data.message || `${data.username} вышел из сети`,
@@ -273,17 +292,9 @@ export default function ChatRoom() {
     }
   }
 
-  const generateMessageKey = (message: ChatMessage) => {
-    // Комбинируем несколько свойств для создания уникального ключа
-    const baseKey = `${message.type}-${message.senderId}-${message.timestamp}`
-
-    // Добавляем случайную строку только для сообщений без ID
-    if (!message.id || message.id.startsWith('system') || message.id.startsWith('msg-')) {
-      // eslint-disable-next-line react-hooks/purity
-      return `${baseKey}-${Math.random().toString(36).substr(2, 9)}`
-    }
-
-    return message.id
+  // Упрощенная функция генерации ключей
+  const generateMessageKey = (message: ChatMessage, index: number) => {
+    return `${message.id}-${index}-${message.timestamp}`
   }
 
   // Подключение к WebSocket
@@ -310,6 +321,7 @@ export default function ChatRoom() {
     websocket.onmessage = event => {
       try {
         const data = JSON.parse(event.data)
+        console.log('🔵 WebSocket message received:', data.type, data.id || 'no-id')
         handleIncomingMessage(data)
       } catch (error) {
         console.error('Error parsing message:', error)
@@ -326,7 +338,6 @@ export default function ChatRoom() {
         setTimeout(() => {
           if (session?.user?.id && session.user.name) {
             console.log('Attempting to reconnect...')
-            // Триггерим эффект заново
             setWs(null)
           }
         }, 2000 * connectionAttemptRef.current)
@@ -350,7 +361,7 @@ export default function ChatRoom() {
 
     setTargetUser(user)
     setMessages([])
-    // setActiveChat(null)
+    processedMessageIds.current.clear() // Очищаем отслеживаемые ID при смене чата
     currentChatIdRef.current = null
 
     const joinMessage = {
@@ -367,9 +378,9 @@ export default function ChatRoom() {
   // Закрыть текущий чат
   const closeCurrentChat = () => {
     setTargetUser(null)
-    // setActiveChat(null)
     setMessages([])
     setTypingUsers([])
+    processedMessageIds.current.clear() // Очищаем отслеживаемые ID при закрытии чата
     currentChatIdRef.current = null
   }
 
@@ -383,7 +394,7 @@ export default function ChatRoom() {
       receiverId: targetUser.userId
     }
 
-    console.log('Sending private message to:', targetUser.userId)
+    console.log('🟡 SENDING message to:', targetUser.userId)
     ws.send(JSON.stringify(messageData))
     setMessage('')
   }
@@ -412,6 +423,12 @@ export default function ChatRoom() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTypingUsers([])
   }, [targetUser])
+
+  // Отладочный вывод текущих сообщений
+  useEffect(() => {
+    console.log('📝 Current messages count:', messages.length)
+    console.log('📝 Tracked message IDs:', Array.from(processedMessageIds.current))
+  }, [messages])
 
   // Вспомогательные функции
   const formatTime = (timestamp: number) => {
@@ -603,22 +620,22 @@ export default function ChatRoom() {
                   <p className='text-sm text-gray-500'>Начните общение с {targetUser.username}</p>
                 </div>
               ) : (
-                messages.map(msg => {
+                messages.map((msg, index) => {
                   const isMyMessage = msg.senderId === session?.user?.id
                   const isSystemMessage = msg.type === 'system'
 
                   return (
                     <div
-                      key={generateMessageKey(msg)}
-                      className={`flex ${!isMyMessage ? 'justify-end' : isSystemMessage ? 'justify-center' : 'justify-start'}`}
+                      key={generateMessageKey(msg, index)}
+                      className={`flex ${isMyMessage ? 'justify-end' : isSystemMessage ? 'justify-center' : 'justify-start'}`}
                     >
                       <div
                         className={`max-w-md px-4 py-2 rounded-2xl ${
                           isMyMessage
-                            ? 'bg-blue-600 text-white rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl'
+                            ? 'bg-blue-600 text-white rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl'
                             : isSystemMessage
                               ? 'bg-gray-700 text-gray-300 text-sm rounded-2xl'
-                              : 'bg-gray-700 text-white rounded-tr-2xl rounded-br-2xl rounded-bl-2xl'
+                              : 'bg-gray-700 text-white rounded-tl-2xl rounded-tr-2xl rounded-br-2xl'
                         }`}
                       >
                         {!isSystemMessage && !isMyMessage && (
