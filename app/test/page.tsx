@@ -6,4 +6,6 @@ const TestPage = () => {
   )
 }
 
+// Export the TestPage component as the default export
+
 export default TestPage

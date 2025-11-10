@@ -96,7 +96,7 @@ const ChatPage = () => {
     }
 
     // Создаем WebSocket соединение
-    const wsUrl = `${wsBaseUrl}chat`
+    const wsUrl = `${wsBaseUrl}chatroom?room=${userId}&username=${session?.user?.name || 'Anonymous'}`
     console.log('Connecting to WebSocket:', wsUrl)
 
     try {
