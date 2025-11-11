@@ -627,15 +627,15 @@ export default function ChatRoom() {
                   return (
                     <div
                       key={generateMessageKey(msg, index)}
-                      className={`flex ${isMyMessage ? 'justify-end' : isSystemMessage ? 'justify-center' : 'justify-start'}`}
+                      className={`flex ${isMyMessage ? 'justify-center' : isSystemMessage ? 'justify-center' : 'justify-end'}`}
                     >
                       <div
                         className={`max-w-md px-4 py-2 rounded-2xl ${
                           isMyMessage
-                            ? 'bg-blue-600 text-white rounded-tr-2xl rounded-tl-2xl rounded-bl-2xl'
+                            ? 'bg-blue-600 text-white rounded-tr-none rounded-tl-2xl rounded-bl-2xl'
                             : isSystemMessage
-                              ? 'bg-gray-700 text-gray-300 text-sm rounded-2xl'
-                              : 'bg-gray-700 text-white rounded-tl-2xl rounded-tr-2xl rounded-br-2xl'
+                              ? 'bg-gray-700 text-gray-300 text-sm rounded-2xl text-center'
+                              : 'bg-gray-700 text-white rounded-tl-2xl rounded-tr-none rounded-br-2xl '
                         }`}
                       >
                         {!isSystemMessage && !isMyMessage && (
@@ -643,11 +643,15 @@ export default function ChatRoom() {
                         )}
                         <div className='text-sm'>{msg.message}</div>
                         <div
-                          className={`text-xs mt-1 flex items-center ${
-                            isMyMessage ? 'justify-end' : 'justify-start'
+                          className={`text-xs mt-1 flex items-center justify-center ${
+                            isMyMessage
+                              ? 'justify-center'
+                              : !isMyMessage && isSystemMessage
+                                ? 'justify-center'
+                                : 'justify-start'
                           } space-x-1 ${isMyMessage ? 'text-blue-200' : 'text-gray-400'}`}
                         >
-                          <span>{formatTime(msg.timestamp)}</span>
+                          <p className={'text-center'}>{formatTime(msg.timestamp)}</p>
                           {isMyMessage && <span>{msg.isRead ? '✓✓' : '✓'}</span>}
                         </div>
                       </div>
