@@ -1,7 +1,7 @@
 'use client'
 
 import { FaTrash, FaSpinner } from 'react-icons/fa'
-import { formatTime } from '@/shared'
+import { formatTime } from '@/common'
 import type { TPost } from '@/features/posts/types'
 import { useDeletePostMutation } from '@/features/posts/api'
 

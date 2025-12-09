@@ -1,6 +1,6 @@
 'use client'
 
-import { PATH } from '@/shared'
+import { PATH } from '@/common'
 import { FaGithub } from 'react-icons/fa'
 import { useSocialAuth } from '@/features/auth/ui/use-social-auth'
 import { signIn } from 'next-auth/react'

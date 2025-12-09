@@ -1,3 +1,4 @@
-import { PostsPage } from '@/common'
+import { PostsPage } from '@/common/pages'
+
 
 export default PostsPage

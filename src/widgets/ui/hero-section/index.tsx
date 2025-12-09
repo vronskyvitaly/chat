@@ -1,6 +1,6 @@
 import { FeatureCardsSection } from '@/widgets'
 import { Session } from 'next-auth'
-import { DecorativeBackground, Logo } from '@/shared'
+import { DecorativeBackground, Logo } from '@/common'
 import { AuthActionsPanel } from '@/widgets/ui/hero-section/ui'
 
 type HeroSectionProps = {

@@ -1,6 +1,6 @@
 'use client'
 
-import { PATH } from '@/shared'
+import { PATH } from '@/common'
 import { useRouter } from 'next/navigation'
 import { FaArrowLeft, FaUser } from 'react-icons/fa'
 import axios from 'axios'

@@ -1,4 +1,4 @@
-import { HeartIcon, LightningIcon, LockIcon } from '@/shared'
+import { HeartIcon, LightningIcon, LockIcon } from '@/common'
 import { FeatureCard } from '@/widgets'
 
 export const FeatureCardsSection = () => {

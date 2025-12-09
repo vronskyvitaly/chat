@@ -1,4 +1,4 @@
-import { PATH } from '@/shared'
+import { PATH } from '@/common'
 import Link from 'next/link'
 import { GoogleSignInButton } from '@/features'
 
