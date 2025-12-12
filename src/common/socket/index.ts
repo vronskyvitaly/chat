@@ -1,2 +1,1 @@
-export * from './get-socket'
-export * from './subscribe-to-event'
+export * from './socket-subscribe-to-event'

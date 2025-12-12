@@ -3,7 +3,7 @@ import {
   type FetchBaseQueryMeta,
   type QueryReturnValue
 } from '@reduxjs/toolkit/query'
-import { showErrorToast } from '@/common'
+import { showErrorToast } from '@/common/utils'
 
 export type ExtensionsError = {
   data: {

@@ -1,6 +1,6 @@
-import { PATH } from '@/common'
+import { PATH } from '@/common/constants'
 import Link from 'next/link'
-import { GoogleSignInButton } from '@/features'
+import { GoogleSignInButton } from '@/features/auth/ui'
 
 /**
  * Кнопки действий для неавторизованных пользователей

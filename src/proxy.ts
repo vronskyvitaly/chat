@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 import { cookies } from 'next/headers'
-import { PATH } from '@/common'
+import { PATH } from '@/common/constants'
 
 
 export default async function proxy(req: NextRequest) {

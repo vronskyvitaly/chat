@@ -1,7 +1,9 @@
+"use client"
+
 import { baseApi } from '@/app/api/_base-api'
 import type { TCreatePostRequest, TPost } from '@/features/posts/types'
-import { subscribeToEvent } from '@/common/socket/subscribe-to-event'
-import { SOCKET_EVENT_POSTS } from '@/common/constants/socket-events'
+import { subscribeToEvent } from '@/common/socket'
+import { SOCKET_EVENT_POSTS } from '@/features/posts/constants'
 
 export const postsApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -9,7 +11,7 @@ export const postsApi = baseApi.injectEndpoints({
     fetchPosts: build.query<TPost[], void>({
       query: () => ({ url: 'api/posts/get-user-posts' }),
       providesTags: ['PostsUser'],
-      keepUnusedDataFor: 0,
+      keepUnusedDataFor: 60,
       async onCacheEntryAdded(_, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
         // Ждем разрешения начального запроса перед продолжением
         await cacheDataLoaded
@@ -67,7 +69,8 @@ export const postsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['PostsUser']
     })
-  })
+  }),
+  overrideExisting: true,
 })
 
 export const { useFetchPostsQuery, useCreatePostMutation, useDeletePostMutation } = postsApi

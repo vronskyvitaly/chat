@@ -1,5 +1,5 @@
-import { HeartIcon, LightningIcon, LockIcon } from '@/common'
-import { FeatureCard } from '@/widgets'
+import { HeartIcon, LightningIcon, LockIcon } from '@/common/assets/icons'
+import { FeatureCard } from '@/widgets/ui'
 
 export const FeatureCardsSection = () => {
   return (

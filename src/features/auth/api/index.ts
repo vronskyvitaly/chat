@@ -1,12 +1,11 @@
-// src/app/api/users-api.ts
 import { baseApi } from '@/app/api/_base-api'
 import { subscribeToEvent } from '@/common/socket'
 import { TUser } from '@/features/users/types'
-import { SOCKET_EVENT_USERS } from '@/common/constants/socket-events'
+import { SOCKET_EVENT_USERS } from '@/features/users/constants'
 
 
 
-export const authApi = baseApi.injectEndpoints({
+const authApi = baseApi.injectEndpoints({
   endpoints: build => ({
     me: build.query<TUser, void>({
       query: () => ({ url: 'api/auth/me' }),

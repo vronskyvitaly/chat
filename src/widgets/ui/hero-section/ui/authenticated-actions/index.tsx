@@ -1,6 +1,6 @@
-import { PATH } from '@/common'
+import { PATH } from '@/common/constants'
 import Link from 'next/link'
-import { SignOutButton } from '@/features'
+import { SignOutButton } from '@/features/auth/ui'
 
 /**
  * Кнопки действий для авторизованных пользователей

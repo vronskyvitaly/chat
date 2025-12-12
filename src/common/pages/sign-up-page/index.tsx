@@ -1,11 +1,11 @@
 'use client'
 
-import { PATH } from '@/common'
+import { PATH } from '@/common/constants'
 import { useRouter } from 'next/navigation'
 import { FaArrowLeft, FaUser } from 'react-icons/fa'
 import axios from 'axios'
 import { useState } from 'react'
-import { SignUpForm, SignUpFormValues } from '@/features'
+import { SignUpFormValues, SignUpForm } from '@/features/auth/ui'
 
 const SignUpPage = () => {
   const router = useRouter()

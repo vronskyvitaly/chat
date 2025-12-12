@@ -2,7 +2,7 @@
 
 import { FaEnvelope, FaLock } from 'react-icons/fa'
 import { useState } from 'react'
-import { SignInFormValues, useSignInForm } from '@/features/auth/ui/sign-in-form/use-sing-in-form'
+import { SignInFormValues, useSignInForm } from '@/features/auth/ui/sign-in-form/use-sign-in-form'
 
 
 

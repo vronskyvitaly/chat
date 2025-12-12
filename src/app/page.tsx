@@ -1,3 +1,3 @@
-import { HomePage } from '@/common'
+import { HomePage } from '@/common/pages'
 
 export default HomePage

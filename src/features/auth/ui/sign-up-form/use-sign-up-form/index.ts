@@ -59,7 +59,7 @@ export const useSignUpForm = () =>
 //   setIsLoading(true)
 //
 //   try {
-//     const response = await axios.post(`${process.env.NEXT_PUBLIC_EXPRESS_SERVER}api/auth/register`, {
+//     const response = await axios.post(`${process.env.NEXT_PUBLIC_EXPRESS_SERVER}posts-auth-api/auth/register`, {
 //       name: data.name.trim(),
 //       email: data.email.trim(),
 //       password: data.password

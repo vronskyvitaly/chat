@@ -1,13 +1,12 @@
 'use client'
 
-import { PATH } from '@/common'
+import { PATH } from '@/common/constants'
 import { FaGithub } from 'react-icons/fa'
 import { useSocialAuth } from '@/features/auth/ui/use-social-auth'
 import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { SignInFormValues } from '@/features/auth/ui/sign-in-form/use-sing-in-form'
-import { SignInForm } from '@/features'
+import { SignInForm, SignInFormValues } from '@/features/auth/ui'
 
 export default function SignInPage() {
   const [error, setError] = useState<string | null>(null)

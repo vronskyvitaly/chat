@@ -1,6 +1,5 @@
 import { Session } from 'next-auth'
-import { AuthenticatedActions } from '@/widgets/ui/hero-section/ui/authenticated-actions'
-import { UnauthenticatedActions } from '@/widgets/ui/hero-section/ui/unauthenticated-actions'
+import { UnauthenticatedActions, AuthenticatedActions } from '@/widgets/ui/hero-section/ui'
 
 interface AuthActionsPanelProps {
   session: Session | null

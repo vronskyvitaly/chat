@@ -1,11 +1,11 @@
 import {
-  type BaseQueryFn,
-  type FetchArgs,
+  BaseQueryFn,
+  FetchArgs,
   fetchBaseQuery,
-  type FetchBaseQueryError
+  FetchBaseQueryError
 } from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
-import { PATH } from '@/common'
+import { PATH } from '@/common/constants'
 import { handleError } from '@/app/api/_handle-error'
 
 const isBrowser = typeof window !== 'undefined'
