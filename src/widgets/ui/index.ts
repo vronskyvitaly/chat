@@ -1,5 +1,5 @@
 export * from './feature-card'
-export * from './feature-cards-section'
+export * from '../sections/feature-cards-section'
 export * from './footer'
 export * from './loading-full-screen'
-export * from './hero-section'
+export * from '../sections/hero-section'

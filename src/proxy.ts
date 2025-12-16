@@ -5,7 +5,6 @@ import { getToken } from 'next-auth/jwt'
 import { cookies } from 'next/headers'
 import { PATH } from '@/common/constants'
 
-
 export default async function proxy(req: NextRequest) {
   // Получаем токен из next-auth
   const token = await getToken({
@@ -28,6 +27,7 @@ export default async function proxy(req: NextRequest) {
   const cookieStore = await cookies()
   cookieStore.set('accessToken', `${accessToken}`)
   cookieStore.set('refreshToken', `${refreshToken}`)
+  cookieStore.set('userId', `${token.id}`)
 
   // console.log('Access token:', accessToken)
   // console.log('User ID:', userId)
@@ -40,5 +40,5 @@ export default async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/posts'] // Применяется ко всем маршрутам, начинающимся с /protected/
+  matcher: ['/posts', '/', '/chat'] // Применяется ко всем маршрутам, начинающимся с /protected/
 }

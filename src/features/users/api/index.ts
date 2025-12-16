@@ -1,8 +1,7 @@
 import { baseApi } from '@/app/api/_base-api'
-import { TUser } from '@/features/users/types'
+import type { TUser } from '@/features/users/types'
 import { subscribeToEvent } from '@/common/socket'
 import { SOCKET_EVENT_USERS } from '@/features/users/constants'
-
 
 const usersApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -15,23 +14,34 @@ const usersApi = baseApi.injectEndpoints({
         await cacheDataLoaded
 
         const unsubscribe4 = subscribeToEvent<
-          {user: TUser, onlineCount: number},
+          { user: TUser; onlineCount: number },
           { userId: number; name: string }
         >(
           SOCKET_EVENT_USERS.USER_ONLINE,
           data => {
             debugger
+            updateCachedData(draft => {
+              const userIndex = draft.findIndex(u => u.id === data.user.id)
+              if (userIndex !== -1) {
+                draft[userIndex].isOnline = true
+              }
+            })
           },
           { userId: 1, name: 'test' }
         )
 
         const unsubscribe3 = subscribeToEvent<
-          {user: TUser, onlineCount: number},
+          { user: TUser; onlineCount: number },
           { userId: number; name: string }
         >(
           SOCKET_EVENT_USERS.USER_OFFLINE,
           data => {
-            debugger
+            updateCachedData(draft => {
+              const userIndex = draft.findIndex(u => u.id === data.user.id)
+              if (userIndex !== -1) {
+                draft[userIndex].isOnline = false
+              }
+            })
           },
           { userId: 1, name: 'test' }
         )
@@ -43,18 +53,16 @@ const usersApi = baseApi.injectEndpoints({
         unsubscribe3()
         unsubscribe4()
       }
-
     }),
 
     // Новый endpoint для получения пользователя по email
     fetchUserByEmail: build.query<TUser, string>({
-      query: (email) => ({
+      query: email => ({
         url: `api/users/by-email/${encodeURIComponent(email)}`
       }),
       providesTags: ['User']
     })
-
   })
 })
 
-export const {useFetchUsersQuery, useFetchUserByEmailQuery } = usersApi
+export const { useFetchUsersQuery, useFetchUserByEmailQuery } = usersApi

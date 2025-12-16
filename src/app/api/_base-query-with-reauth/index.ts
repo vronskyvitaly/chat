@@ -1,9 +1,4 @@
-import {
-  BaseQueryFn,
-  FetchArgs,
-  fetchBaseQuery,
-  FetchBaseQueryError
-} from '@reduxjs/toolkit/query/react'
+import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
 import { PATH } from '@/common/constants'
 import { handleError } from '@/app/api/_handle-error'
@@ -123,7 +118,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
           // Перенаправляем на страницу входа если нет refresh token
           if (isBrowser) {
             clearTokens()
-            window.location.href = '/login'
+            window.location.href = PATH.SING_IN
           }
           return result
         }

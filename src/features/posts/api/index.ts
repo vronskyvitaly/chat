@@ -1,5 +1,3 @@
-"use client"
-
 import { baseApi } from '@/app/api/_base-api'
 import type { TCreatePostRequest, TPost } from '@/features/posts/types'
 import { subscribeToEvent } from '@/common/socket'

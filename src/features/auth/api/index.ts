@@ -1,6 +1,6 @@
 import { baseApi } from '@/app/api/_base-api'
 import { subscribeToEvent } from '@/common/socket'
-import { TUser } from '@/features/users/types'
+import type { TUser } from '@/features/users/types'
 import { SOCKET_EVENT_USERS } from '@/features/users/constants'
 
 
@@ -49,8 +49,6 @@ const authApi = baseApi.injectEndpoints({
 
         // CacheEntryRemoved разрешится, когда подписка на кеш больше не активна
         await cacheEntryRemoved
-        // unsubscribe()
-        // unsubscribe2()
         unsubscribe3()
         unsubscribe4()
       }
