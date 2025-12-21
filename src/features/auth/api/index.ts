@@ -3,8 +3,6 @@ import { subscribeToEvent } from '@/common/socket'
 import type { TUser } from '@/features/users/types'
 import { SOCKET_EVENT_USERS } from '@/features/users/constants'
 
-
-
 const authApi = baseApi.injectEndpoints({
   endpoints: build => ({
     me: build.query<TUser, void>({
@@ -12,18 +10,16 @@ const authApi = baseApi.injectEndpoints({
       keepUnusedDataFor: 60,
       providesTags: ['Auth'],
       async onCacheEntryAdded(_, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
-        // Ждем разрешения начального запроса перед продолжением
         await cacheDataLoaded
 
         const unsubscribe4 = subscribeToEvent<
-          {user: TUser, onlineCount: number},
+          { user: TUser; onlineCount: number },
           { userId: number; name: string }
         >(
           SOCKET_EVENT_USERS.USER_ONLINE,
           data => {
-            updateCachedData( (draft) => {
+            updateCachedData(draft => {
               if (draft?.id === data.user.id) {
-                debugger
                 draft.isOnline = true
               }
             })
@@ -32,14 +28,13 @@ const authApi = baseApi.injectEndpoints({
         )
 
         const unsubscribe3 = subscribeToEvent<
-          {user: TUser, onlineCount: number},
+          { user: TUser; onlineCount: number },
           { userId: number; name: string }
         >(
           SOCKET_EVENT_USERS.USER_OFFLINE,
           data => {
-            updateCachedData( (draft) => {
+            updateCachedData(draft => {
               if (draft?.id === data.user.id) {
-                debugger
                 draft.isOnline = false
               }
             })
@@ -52,9 +47,7 @@ const authApi = baseApi.injectEndpoints({
         unsubscribe3()
         unsubscribe4()
       }
-
     }),
-
 
     signUp: build.mutation<
       { message: string; userId: number },

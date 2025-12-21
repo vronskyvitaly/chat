@@ -1,7 +1,7 @@
 import { baseApi } from '@/app/api/_base-api'
-import type { TUser } from '@/features/users/types'
 import { subscribeToEvent } from '@/common/socket'
 import { SOCKET_EVENT_USERS } from '@/features/users/constants'
+import type { TUser } from '@/features/users/types'
 
 const usersApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -10,7 +10,6 @@ const usersApi = baseApi.injectEndpoints({
       keepUnusedDataFor: 0,
       providesTags: ['Users'],
       async onCacheEntryAdded(_, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
-        // Ждем разрешения начального запроса перед продолжением
         await cacheDataLoaded
 
         const unsubscribe4 = subscribeToEvent<
@@ -19,7 +18,6 @@ const usersApi = baseApi.injectEndpoints({
         >(
           SOCKET_EVENT_USERS.USER_ONLINE,
           data => {
-            debugger
             updateCachedData(draft => {
               const userIndex = draft.findIndex(u => u.id === data.user.id)
               if (userIndex !== -1) {
@@ -48,8 +46,6 @@ const usersApi = baseApi.injectEndpoints({
 
         // CacheEntryRemoved разрешится, когда подписка на кеш больше не активна
         await cacheEntryRemoved
-        // unsubscribe()
-        // unsubscribe2()
         unsubscribe3()
         unsubscribe4()
       }

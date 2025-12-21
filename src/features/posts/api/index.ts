@@ -1,7 +1,7 @@
 import { baseApi } from '@/app/api/_base-api'
-import type { TCreatePostRequest, TPost } from '@/features/posts/types'
 import { subscribeToEvent } from '@/common/socket'
 import { SOCKET_EVENT_POSTS } from '@/features/posts/constants'
+import type { TCreatePostRequest, TPost } from '@/features/posts/types'
 
 export const postsApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -11,17 +11,12 @@ export const postsApi = baseApi.injectEndpoints({
       providesTags: ['PostsUser'],
       keepUnusedDataFor: 60,
       async onCacheEntryAdded(_, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
-        // Ждем разрешения начального запроса перед продолжением
         await cacheDataLoaded
 
-        const unsubscribe4 = subscribeToEvent<
-          { postId: number },
-          { userId: number; name: string }
-        >(
+        const unsubscribe4 = subscribeToEvent<{ postId: number }, { userId: number; name: string }>(
           SOCKET_EVENT_POSTS.POST_DELETED,
           data => {
-            updateCachedData((draft) => {
-              // ✅ Находим индекс поста с нужным ID
+            updateCachedData(draft => {
               const postIndex = draft.findIndex(post => post.id === data.postId)
               if (postIndex !== -1) {
                 draft.splice(postIndex, 1)
@@ -37,8 +32,8 @@ export const postsApi = baseApi.injectEndpoints({
         >(
           SOCKET_EVENT_POSTS.POST_CREATED,
           data => {
-            updateCachedData( (draft) => {
-             draft.unshift(data.post)
+            updateCachedData(draft => {
+              draft.unshift(data.post)
             })
           },
           { userId: 1, name: 'test' }
@@ -68,7 +63,7 @@ export const postsApi = baseApi.injectEndpoints({
       invalidatesTags: ['PostsUser']
     })
   }),
-  overrideExisting: true,
+  overrideExisting: true
 })
 
 export const { useFetchPostsQuery, useCreatePostMutation, useDeletePostMutation } = postsApi

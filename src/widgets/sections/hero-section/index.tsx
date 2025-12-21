@@ -1,7 +1,7 @@
-import { FeatureCardsSection } from '@/widgets/ui'
+import { FeatureCardsSection } from '@/widgets/sections'
 import { Session } from 'next-auth'
 import { DecorativeBackground, Logo } from '@/common/components/ui'
-import { AuthActionsPanel } from '@/widgets/sections/hero-section/ui'
+import { AuthActionsPanel } from '@/widgets/ui'
 
 type HeroSectionProps = {
   session: Session | null

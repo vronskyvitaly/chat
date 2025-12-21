@@ -1,9 +1,9 @@
 'use client'
 import { useSession } from 'next-auth/react'
-import {  HeroSection } from '@/widgets/sections'
-import { Footer, LoadingFullScreen } from '@/widgets/ui'
+import { HeroSection, Footer } from '@/widgets/sections'
+import { LoadingFullScreen } from '@/widgets/ui'
 
-export default function HomePage(){
+export default function HomePage() {
   const { data: session, status } = useSession()
 
   if (status === 'loading') {

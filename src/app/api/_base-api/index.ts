@@ -3,7 +3,6 @@ import { baseQueryWithReauth } from '@/app/api/_base-query-with-reauth'
 
 export const baseApi = createApi({
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['Posts', "PostsUser", 'Users', "User" ,'Chats', 'Messages', 'Auth'],
-  endpoints: () => ({}),
-
+  tagTypes: ['Posts', 'PostsUser', 'Users', 'User', 'Chat', 'Messages', 'Auth'],
+  endpoints: () => ({})
 })
