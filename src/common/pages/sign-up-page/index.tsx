@@ -1,18 +1,18 @@
 'use client'
-
+import axios from 'axios'
+import { useState } from 'react'
 import { PATH } from '@/common/constants'
 import { useRouter } from 'next/navigation'
 import { FaArrowLeft, FaUser } from 'react-icons/fa'
-import axios from 'axios'
-import { useState } from 'react'
-import { SignUpFormValues, SignUpForm } from '@/features/auth/ui'
+import { SignUpForm } from '@/features/auth/ui/sign-up-form/ui'
+import type { TSignUpFormValues } from '@/features/auth/ui/sign-up-form/types'
 
 const SignUpPage = () => {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const onSubmit = async (data: SignUpFormValues) => {
+  const onSubmit = async (data: TSignUpFormValues) => {
     setError(null)
     setIsLoading(true)
 

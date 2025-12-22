@@ -1,13 +1,11 @@
 'use client'
-
 import { FaEnvelope, FaLock } from 'react-icons/fa'
 import { useState } from 'react'
-import { SignInFormValues, useSignInForm } from '@/features/auth/ui/sign-in-form/use-sign-in-form'
-
-
+import { useSignInForm } from '@/features/auth/ui/sign-in-form/hook'
+import type { TSignInFormValues } from '@/features/auth/ui/sign-in-form/types'
 
 type Props = {
-  onSubmit(data: SignInFormValues): void
+  onSubmit(data: TSignInFormValues): void
   error: string | null
   isLoading: boolean
 }
@@ -149,4 +147,3 @@ export const SignInForm = ({ onSubmit, error, isLoading: externalIsLoading }: Pr
     </form>
   )
 }
-
