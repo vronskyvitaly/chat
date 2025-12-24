@@ -7,8 +7,8 @@
  * @returns Отформатированная строка
  */
 export const formatTime = (
-  timestamp: number,
-  format: 'time' | 'date' | 'datetime' | 'full' = 'time'
+  timestamp: string,
+  format: 'time' | 'date' | 'datetime' | 'timeAndDate' | 'full' = 'time'
 ): string => {
   const date = new Date(timestamp)
 
@@ -22,6 +22,14 @@ export const formatTime = (
       day: 'numeric',
       month: 'long',
       year: 'numeric'
+    } as Intl.DateTimeFormatOptions,
+
+    timeAndDate: {
+      hour: '2-digit',
+      minute: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+      month: '2-digit'
     } as Intl.DateTimeFormatOptions,
 
     datetime: {

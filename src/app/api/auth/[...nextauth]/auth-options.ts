@@ -1,4 +1,3 @@
-// pages/api/auth/[...nextauth].ts
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import axios from 'axios'
@@ -48,22 +47,27 @@ export const authOptions: NextAuthOptions = {
       // console.log('session 33', token)
       try {
         // Получаем данные пользователя по email
-        const res = await axios.get<undefined, { data: UserSession }>(
-          `${process.env.NEXT_PUBLIC_EXPRESS_SERVER}api/user/${session?.user?.email}`
+        const res = await axios.get<undefined, { data:  UserSession }>(
+          `${process.env.NEXT_PUBLIC_EXPRESS_SERVER}api/users/by-email/${session?.user?.email}`
         )
 
-        return {
-          ...session,
-          user: {
-            ...session.user,
-            name: res?.data?.name,
-            id: res?.data?.id,
-            isAdmin: res?.data?.isAdmin || false // Указываем значение по умолчанию
+        if (res.data !== undefined ) {
+          return {
+            ...session,
+            user: {
+              ...session.user,
+              name: res?.data?.name,
+              id: res?.data?.id,
+              isAdmin: res?.data?.isAdmin || false // Указываем значение по умолчанию
+            }
           }
+        } else {
+          return session
         }
+
       } catch (e) {
-        console.error('Error fetching user data:', e)
-        return session // Возвращаем исходную сессию в случае ошибки
+        console.error('Error fetching user data [auth-options-session]:', e)
+        return session
       }
     },
     async jwt({ token, user }) {

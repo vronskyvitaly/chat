@@ -1,13 +1,12 @@
 'use client'
-
-import { PATH } from '@/shared'
+import { useState } from 'react'
+import { PATH } from '@/common/constants'
 import { FaGithub } from 'react-icons/fa'
 import { useSocialAuth } from '@/features/auth/ui/use-social-auth'
 import { signIn } from 'next-auth/react'
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { SignInFormValues } from '@/features/auth/ui/sign-in-form/use-sing-in-form'
-import { SignInForm } from '@/features'
+import { SignInForm } from '@/features/auth/ui/sign-in-form/ui'
+import type { TSignInFormValues } from '@/features/auth/ui/sign-in-form/types'
 
 export default function SignInPage() {
   const [error, setError] = useState<string | null>(null)
@@ -19,7 +18,7 @@ export default function SignInPage() {
   // Исправлено: убрали дублирующую isLoading переменную
   const isLoading = isSocialLoading || loading
 
-  const onSubmit = async (data: SignInFormValues) => {
+  const onSubmit = async (data: TSignInFormValues) => {
     setError(null)
     setLoading(true) // Исправлено: setIsLoading -> setLoading
 

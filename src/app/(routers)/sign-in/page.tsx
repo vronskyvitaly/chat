@@ -1,3 +1,4 @@
-import { SignInPage } from '@/common'
+import { SignInPage } from '@/common/pages'
+
 
 export default SignInPage

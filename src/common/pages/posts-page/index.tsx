@@ -1,15 +1,16 @@
 'use client'
 
-import { useCreatePostMutation, useFetchPostsQuery } from '@/features/posts/api'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
-import { PATH } from '@/shared'
-import { LoadingFullScreen } from '@/widgets'
-import { TCreatePostRequest } from '@/features/posts/types'
+import { PATH } from '@/common/constants'
+import { LoadingFullScreen } from '@/widgets/ui'
+import type { TCreatePostRequest } from '@/features/posts/types'
 import { PostsList } from '@/features/posts/ui/posts-list'
+import { useCreatePostMutation, useFetchPostsQuery } from '@/features/posts/api'
+
 
 export default function PostsPage() {
   const { data: session, status } = useSession()
@@ -149,11 +150,7 @@ export default function PostsPage() {
                 <p className='mt-1 text-sm text-red-600 dark:text-red-400'>{errors.content.message}</p>
               )}
             </div>
-            {error && (
-              <div className='p-3 bg-red-100 border border-red-200 rounded-lg text-red-700 text-sm dark:bg-red-900/30 dark:border-red-800 dark:text-red-400'>
-                {'data' in error ? String(error.data) : 'An error occurred'}
-              </div>
-            )}
+
             <button
               type='submit'
               disabled={isCreating}

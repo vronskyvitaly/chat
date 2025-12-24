@@ -1,11 +1,6 @@
-import {
-  type BaseQueryFn,
-  type FetchArgs,
-  fetchBaseQuery,
-  type FetchBaseQueryError
-} from '@reduxjs/toolkit/query/react'
+import { BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import { Mutex } from 'async-mutex'
-import { PATH } from '@/shared'
+import { PATH } from '@/common/constants'
 import { handleError } from '@/app/api/_handle-error'
 
 const isBrowser = typeof window !== 'undefined'
@@ -69,7 +64,7 @@ const clearTokens = (): void => {
 const mutex = new Mutex()
 
 /** Базовый запрос с авторизацией */
-const baseQuery = fetchBaseQuery({
+const base = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_EXPRESS_SERVER,
   prepareHeaders: headers => {
     const token = getAccessToken()
@@ -106,7 +101,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
   await mutex.waitForUnlock()
 
   // основной запрос
-  let result = await baseQuery(args, api, extraOptions)
+  let result = await base(args, api, extraOptions)
 
   handleError(result)
 
@@ -123,13 +118,13 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
           // Перенаправляем на страницу входа если нет refresh token
           if (isBrowser) {
             clearTokens()
-            window.location.href = '/login'
+            window.location.href = PATH.SING_IN
           }
           return result
         }
 
         // Запрашиваем новые токены
-        const refreshResult = await baseQuery(
+        const refreshResult = await base(
           {
             url: 'api/auth/token/refresh',
             method: 'POST',
@@ -152,7 +147,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
           }
 
           // Повтор запроса с новым токеном
-          result = await baseQuery(args, api, extraOptions)
+          result = await base(args, api, extraOptions)
         } else {
           // Если рефреш не удался - очищаем токены и перенаправляем на логин
           console.log('Logout: refresh token invalid or expired')
@@ -173,7 +168,7 @@ export const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, Fetch
     } else {
       // Ждем пока другой запрос завершит рефреш
       await mutex.waitForUnlock()
-      result = await baseQuery(args, api, extraOptions)
+      result = await base(args, api, extraOptions)
     }
   }
 

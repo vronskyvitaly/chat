@@ -1,7 +1,7 @@
 'use client'
 
 import { FaTrash, FaSpinner } from 'react-icons/fa'
-import { formatTime } from '@/shared'
+import { formatTime } from '@/common/lib'
 import type { TPost } from '@/features/posts/types'
 import { useDeletePostMutation } from '@/features/posts/api'
 
@@ -31,9 +31,7 @@ export const Post = ({ post }: { post: TPost }) => {
       </div>
       <p className='text-gray-600 dark:text-gray-400 mb-3 whitespace-pre-wrap'>{post.content}</p>
       <div className='flex items-center justify-between'>
-        <p className='text-sm text-gray-500 dark:text-gray-400'>
-          {formatTime(+new Date(post.createdAt), 'full')}
-        </p>
+        <p className='text-sm text-gray-500 dark:text-gray-400'>{formatTime(post.createdAt, 'full')}</p>
       </div>
     </div>
   )

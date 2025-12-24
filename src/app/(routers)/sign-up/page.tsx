@@ -1,3 +1,3 @@
-import { SignUpPage } from '@/common'
+import { SignUpPage } from '@/common/pages'
 
 export default SignUpPage

@@ -2,15 +2,29 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  onDemandEntries: {
-    // отключает агрессивный кэш dev-режима
-    maxInactiveAge: 0
-  },
+  enablePrerenderSourceMaps: true,
   webpack: config => {
-    config.cache = false // отключает кеш webpаck
+    config.cache = false
     return config
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+        port: '',
+        pathname: '/u/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'vitaly-next-start.s3.eu-north-1.amazonaws.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.yandexcloud.net'
+      }
+    ]
   }
-  /* config options here */
 }
 
 export default nextConfig

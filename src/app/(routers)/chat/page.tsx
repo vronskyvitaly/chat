@@ -1,3 +1,12 @@
-import { ChatPage } from '@/common'
+import { ChatAreaEmpty, ChatSidebar } from '@/features/chat/ui'
 
-export default ChatPage
+export default function ChatPage() {
+  return (
+    <div className='flex h-screen bg-gray-100'>
+      {/* Sidebar */}
+      <ChatSidebar />
+      {/* Chat Area */}
+      <ChatAreaEmpty />
+    </div>
+  )
+}
