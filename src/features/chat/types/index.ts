@@ -1,6 +1,7 @@
 export type TChatMessage = {
   chatId: string
   content: string
+  imageUrl: string | null
   createdAt: string
   id: string
   isRead: boolean

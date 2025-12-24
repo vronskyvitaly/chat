@@ -1,8 +1,8 @@
 'use client'
 import { FaPaperPlane } from 'react-icons/fa'
+import { useSendMessageToUserForm } from '@/features/chat/ui/send-message-to-user-form/hook'
 import type { TUser } from '@/features/users/types'
 import type { TSendMessageSchemaValues } from '@/features/chat/ui/send-message-to-user-form/types'
-import { useSendMessageToUserForm } from '@/features/chat/ui/send-message-to-user-form/hook'
 
 export const SendMessageToUserForm = ({
   onSendMessage,
@@ -33,7 +33,7 @@ export const SendMessageToUserForm = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+    <form onSubmit={handleSubmit(onSubmit)} className='w-full'>
       <div className='p-4 bg-white border-t border-gray-200'>
         <div className='flex gap-2'>
           <textarea

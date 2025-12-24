@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { TSendMessageSchemaValues } from '@/features/chat/ui'
+import type { TSendMessageSchemaValues } from '@/features/chat/ui/send-message-to-user-form/types'
 
 export const sendMessageSchema = z.object({
   content: z.string().min(1, { message: 'Message must contain at least 1 character' })

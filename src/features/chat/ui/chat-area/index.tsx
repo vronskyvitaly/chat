@@ -1,10 +1,10 @@
 'use client'
-import { FaUser } from 'react-icons/fa'
-import { useFetchUserChatQuery, useSendMessageMutation } from '@/features/chat/api'
-import { ChatAreaHeader, ChatAreaMessages } from '@/features/chat/ui'
-import { SendMessageToUserForm } from '@/features/chat/ui/send-message-to-user-form/ui'
+import { useFetchUserChatQuery, useSendFileMutation, useSendMessageMutation } from '@/features/chat/api'
+import { ChatAreaHeader, ChatAreaMessages, ChatSubmitBlock } from '@/features/chat/ui'
 import { useFetchUsersQuery } from '@/features/users/api'
 import type { TSendMessageSchemaValues } from '@/features/chat/ui/send-message-to-user-form/types'
+import type { ChangeEvent } from 'react'
+import axios from 'axios'
 
 type Props = {
   selectedUserId: string
@@ -13,6 +13,7 @@ type Props = {
 export const ChatArea = ({ selectedUserId }: Props) => {
   const { data: chat } = useFetchUserChatQuery({ targetUserId: selectedUserId || '0' })
   const [sendMessageMutation] = useSendMessageMutation()
+  const [sendFileMutation] = useSendFileMutation()
   const { data: users } = useFetchUsersQuery()
 
   if (!users) return null
@@ -23,23 +24,27 @@ export const ChatArea = ({ selectedUserId }: Props) => {
 
   const sendMessageHandler = async (data: TSendMessageSchemaValues) => {
     if (!selectedUserId || !chat) return
-
     await sendMessageMutation({
       chatId: chat.id,
       content: data.content.trim()
     }).unwrap()
   }
 
-  if (!selectedUserId) {
-    return (
-      <div className='flex-1 flex items-center justify-center bg-white'>
-        <div className='text-center text-gray-500'>
-          <FaUser className='w-16 h-16 mx-auto mb-4 opacity-50' />
-          <h3 className='text-xl font-semibold mb-2'>Select a contact</h3>
-          <p>Choose a user from the list to start chatting</p>
-        </div>
-      </div>
-    )
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    try {
+      const input = event.target as HTMLInputElement
+      if (input && input.files?.length && input.files.length > 0 && chat) {
+        const file = input.files[0]
+        const formData = new FormData()
+        formData.set('file', file)
+        formData.set('chatId', chat.id)
+        sendFileMutation(formData)
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        console.log('src/features/chat/ui/chat-area/index.tsx', e.response?.data)
+      }
+    }
   }
 
   return (
@@ -49,7 +54,11 @@ export const ChatArea = ({ selectedUserId }: Props) => {
       {/* Messages Area */}
       <ChatAreaMessages selectedUser={user} />
       {/* Send message form */}
-      <SendMessageToUserForm selectedUser={user} onSendMessage={sendMessageHandler} />
+      <ChatSubmitBlock
+        selectedUser={user}
+        onSendMessageHandler={sendMessageHandler}
+        onFileChange={handleFileChange}
+      />
     </div>
   )
 }

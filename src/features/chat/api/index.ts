@@ -38,8 +38,20 @@ const chatApi = baseApi.injectEndpoints({
         body: { chatId, content }
       }),
       invalidatesTags: ['Chat']
+    }),
+
+    sendFile: build.mutation<TChatMessage, FormData>({
+      query: FormData => ({
+        url: 'api/chat/image',
+        method: 'POST',
+        body: FormData,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }),
+      invalidatesTags: ['Chat']
     })
   })
 })
 
-export const { useFetchUserChatQuery, useSendMessageMutation } = chatApi
+export const { useFetchUserChatQuery, useSendMessageMutation, useSendFileMutation } = chatApi
