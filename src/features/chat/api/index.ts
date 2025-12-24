@@ -19,6 +19,7 @@ const chatApi = baseApi.injectEndpoints({
         const unsubscribe4 = subscribeToEvent<{ message: TChatMessage }, { userId: number; name: string }>(
           SOCKET_EVENT_CHAT.CHAT_MESSAGE,
           data => {
+            debugger
             updateCachedData(draft => {
               draft.messages.push(data.message)
             })

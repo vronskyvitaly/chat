@@ -1,8 +1,10 @@
 'use client'
 import { ChatSidebarSearchUserInput, ChatSidebarHeader, UserList } from '@/features/chat/ui'
 import { useState } from 'react'
+import { useMeQuery } from '@/features/auth/api'
 
 export const ChatSidebar = () => {
+  useMeQuery()
   const [searchTerm, setSearchTerm] = useState('')
 
   return (
