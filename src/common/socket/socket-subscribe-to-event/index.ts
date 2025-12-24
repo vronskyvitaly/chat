@@ -5,7 +5,6 @@ let socket: Socket | null = null
 
 const getSocket = <T extends Record<string, unknown>>(query: T): Socket => {
   if (!socket) {
-    // todo: ЗАМЕНИТЬ ПРИ ДЕПЛОЕ НА КЛИЕНТЕ НА https://server.developerserver.ru/
     socket = io(process.env.NEXT_PUBLIC_EXPRESS_URL_WS + 'WS', {
       transports: ['websocket'],
       query
@@ -16,8 +15,6 @@ const getSocket = <T extends Record<string, unknown>>(query: T): Socket => {
   }
   return socket
 }
-
-
 
 type Callback<T> = (data: T) => void
 
