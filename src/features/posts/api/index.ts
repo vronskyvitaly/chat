@@ -2,6 +2,7 @@ import { baseApi } from '@/app/api/_base-api'
 import { subscribeToEvent } from '@/common/socket'
 import { SOCKET_EVENT_POSTS } from '@/features/posts/constants'
 import type { TCreatePostRequest, TPost } from '@/features/posts/types'
+import { getCookie } from '@/common/utils/get-cookie'
 
 export const postsApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -9,9 +10,11 @@ export const postsApi = baseApi.injectEndpoints({
     fetchPosts: build.query<TPost[], void>({
       query: () => ({ url: 'api/posts/get-user-posts' }),
       providesTags: ['PostsUser'],
-      keepUnusedDataFor: 60,
+      keepUnusedDataFor: 0,
       async onCacheEntryAdded(_, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
         await cacheDataLoaded
+
+        const userId = await getCookie('userId')
 
         const unsubscribe4 = subscribeToEvent<{ postId: number }, { userId: number; name: string }>(
           SOCKET_EVENT_POSTS.POST_DELETED,
@@ -23,7 +26,7 @@ export const postsApi = baseApi.injectEndpoints({
               }
             })
           },
-          { userId: 1, name: 'test' }
+          { userId: +userId!, name: 'test' }
         )
 
         const unsubscribe3 = subscribeToEvent<
@@ -36,7 +39,7 @@ export const postsApi = baseApi.injectEndpoints({
               draft.unshift(data.post)
             })
           },
-          { userId: 1, name: 'test' }
+          { userId: +userId!, name: 'test' }
         )
 
         // CacheEntryRemoved разрешится, когда подписка на кеш больше не активна

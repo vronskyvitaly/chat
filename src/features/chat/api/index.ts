@@ -2,6 +2,7 @@ import { baseApi } from '@/app/api/_base-api'
 import { SOCKET_EVENT_CHAT } from '@/features/chat/constants'
 import { subscribeToEvent } from '@/common/socket'
 import type { TChatMessage, TResponseFetchUserChat } from '@/features/chat/types'
+import { getCookie } from '@/common/utils/get-cookie'
 
 const chatApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -16,6 +17,8 @@ const chatApi = baseApi.injectEndpoints({
       async onCacheEntryAdded(_, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
         await cacheDataLoaded
 
+        const userId = await getCookie('userId')
+
         const unsubscribe4 = subscribeToEvent<{ message: TChatMessage }, { userId: number; name: string }>(
           SOCKET_EVENT_CHAT.CHAT_MESSAGE,
           data => {
@@ -24,7 +27,7 @@ const chatApi = baseApi.injectEndpoints({
               draft.messages.push(data.message)
             })
           },
-          { userId: 1, name: 'test' }
+          { userId: +userId!, name: 'test' }
         )
 
         // CacheEntryRemoved разрешится, когда подписка на кеш больше не активна

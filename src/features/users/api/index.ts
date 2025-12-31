@@ -2,6 +2,7 @@ import { baseApi } from '@/app/api/_base-api'
 import { subscribeToEvent } from '@/common/socket'
 import { SOCKET_EVENT_USERS } from '@/features/users/constants'
 import type { TUser } from '@/features/users/types'
+import { getCookie } from '@/common/utils/get-cookie'
 
 const usersApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -11,6 +12,8 @@ const usersApi = baseApi.injectEndpoints({
       providesTags: ['Users'],
       async onCacheEntryAdded(_, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
         await cacheDataLoaded
+
+        const userId = await getCookie('userId')
 
         const unsubscribe4 = subscribeToEvent<
           { user: TUser; onlineCount: number },
@@ -25,7 +28,7 @@ const usersApi = baseApi.injectEndpoints({
               }
             })
           },
-          { userId: 1, name: 'test' }
+          { userId: +userId!, name: 'test' }
         )
 
         const unsubscribe3 = subscribeToEvent<
@@ -41,7 +44,7 @@ const usersApi = baseApi.injectEndpoints({
               }
             })
           },
-          { userId: 1, name: 'test' }
+          { userId: +userId!, name: 'test' }
         )
 
         // CacheEntryRemoved разрешится, когда подписка на кеш больше не активна
