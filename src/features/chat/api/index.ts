@@ -11,7 +11,6 @@ const chatApi = baseApi.injectEndpoints({
         url: 'api/chat',
         params: { targetUserId }
       }),
-
       keepUnusedDataFor: 0,
       providesTags: ['Chat'],
       async onCacheEntryAdded(_, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
@@ -30,7 +29,6 @@ const chatApi = baseApi.injectEndpoints({
           { userId: +userId!, name: 'test' }
         )
 
-        // CacheEntryRemoved разрешится, когда подписка на кеш больше не активна
         await cacheEntryRemoved
         unsubscribe4()
       }
@@ -43,7 +41,6 @@ const chatApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['Chat']
     }),
-
     sendFile: build.mutation<TChatMessage, FormData>({
       query: FormData => ({
         url: 'api/chat/image',

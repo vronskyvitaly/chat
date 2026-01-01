@@ -6,7 +6,6 @@ import { getCookie } from '@/common/utils/get-cookie'
 
 export const postsApi = baseApi.injectEndpoints({
   endpoints: build => ({
-    // Получение всех постов пользователя
     fetchPosts: build.query<TPost[], void>({
       query: () => ({ url: 'api/posts/get-user-posts' }),
       providesTags: ['PostsUser'],
@@ -42,13 +41,11 @@ export const postsApi = baseApi.injectEndpoints({
           { userId: +userId!, name: 'test' }
         )
 
-        // CacheEntryRemoved разрешится, когда подписка на кеш больше не активна
         await cacheEntryRemoved
         unsubscribe3()
         unsubscribe4()
       }
     }),
-    // Создание нового поста
     createPost: build.mutation<TPost, TCreatePostRequest>({
       query: body => ({
         url: 'api/posts/add-post',
@@ -57,7 +54,6 @@ export const postsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ['PostsUser']
     }),
-    // Удаление поста
     deletePost: build.mutation<void, number>({
       query: postId => ({
         url: `api/posts/delete-post/${postId}`,

@@ -8,7 +8,7 @@ const authApi = baseApi.injectEndpoints({
   endpoints: build => ({
     me: build.query<TUser, void>({
       query: () => ({ url: 'api/auth/me' }),
-      keepUnusedDataFor: 60,
+      keepUnusedDataFor: 0,
       providesTags: ['Auth'],
       async onCacheEntryAdded(_, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
         await cacheDataLoaded
@@ -45,7 +45,6 @@ const authApi = baseApi.injectEndpoints({
           { userId: +userId!, name: 'test' }
         )
 
-        // CacheEntryRemoved разрешится, когда подписка на кеш больше не активна
         await cacheEntryRemoved
         unsubscribe3()
         unsubscribe4()

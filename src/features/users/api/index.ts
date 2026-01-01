@@ -47,14 +47,12 @@ const usersApi = baseApi.injectEndpoints({
           { userId: +userId!, name: 'test' }
         )
 
-        // CacheEntryRemoved разрешится, когда подписка на кеш больше не активна
         await cacheEntryRemoved
         unsubscribe3()
         unsubscribe4()
       }
     }),
 
-    // Новый endpoint для получения пользователя по email
     fetchUserByEmail: build.query<TUser, string>({
       query: email => ({
         url: `api/users/by-email/${encodeURIComponent(email)}`
