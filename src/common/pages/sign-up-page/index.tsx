@@ -43,7 +43,7 @@ const SignUpPage = () => {
   }
 
   return (
-    <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900'>
+    <main className='flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900'>
       <div className='w-full max-w-md'>
         {/* Header */}
         <div className='text-center mb-8'>
@@ -84,7 +84,7 @@ const SignUpPage = () => {
           <p>Secure • Fast • Reliable</p>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 

@@ -11,7 +11,6 @@ import type { TCreatePostRequest } from '@/features/posts/types'
 import { PostsList } from '@/features/posts/ui/posts-list'
 import { useCreatePostMutation, useFetchPostsQuery } from '@/features/posts/api'
 
-
 export default function PostsPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -62,7 +61,7 @@ export default function PostsPage() {
   }
 
   return (
-    <div className='flex min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900'>
+    <main className='flex min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900'>
       <div className='w-full max-w-4xl mx-auto p-4'>
         {/* Header */}
         <div className='flex items-center justify-between mb-8'>
@@ -192,6 +191,6 @@ export default function PostsPage() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   )
 }
