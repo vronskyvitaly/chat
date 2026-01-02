@@ -4,13 +4,14 @@ import type { TCreatePostValues } from '@/features/posts/ui/create-post-form/typ
 
 type Props = {
   onSubmit(data: TCreatePostValues): void
+  createPostIsLoading?: boolean
 }
 
-export const CreatePostForm = ({ onSubmit }: Props) => {
+export const CreatePostForm = ({ onSubmit, createPostIsLoading }: Props) => {
   const {
     handleSubmit,
     register,
-    formState: { errors }
+    formState: { errors, isDirty, isValid }
   } = useCreatePostForm()
 
   return (
@@ -49,8 +50,9 @@ export const CreatePostForm = ({ onSubmit }: Props) => {
         </div>
 
         <button
+          disabled={!isDirty || !isValid || createPostIsLoading}
           type='submit'
-          className='flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-colors'
+          className=' w-full flex items-center justify-center gap-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-colors'
         >
           Create Post
         </button>

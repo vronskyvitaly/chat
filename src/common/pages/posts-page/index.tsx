@@ -14,7 +14,7 @@ export default function PostsPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const { data: posts = [], isLoading } = useFetchPostsQuery()
-  const [createPost, { isLoading: isCreating, error: createError }] = useCreatePostMutation()
+  const [createPost, { isLoading: createPostIsLoading }] = useCreatePostMutation()
   const { reset } = useCreatePostForm()
   const [formKey, setFormKey] = useState(0)
 
@@ -38,12 +38,10 @@ export default function PostsPage() {
     }
   }
 
-  // Показываем загрузку пока проверяем сессию
   if (status === 'loading') {
     return <LoadingFullScreen />
   }
 
-  // Если пользователь не авторизован, не показываем страницу
   if (status === 'unauthenticated') {
     return null
   }
@@ -86,7 +84,7 @@ export default function PostsPage() {
         </div>
 
         {/* Create Post Form */}
-        <CreatePostForm key={formKey} onSubmit={onSubmit} />
+        <CreatePostForm key={formKey} onSubmit={onSubmit} createPostIsLoading={createPostIsLoading} />
 
         {/* Posts List */}
         <div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden'>
