@@ -12,7 +12,7 @@ export const Post = ({ post }: { post: TPost }) => {
     try {
       await deletePost(postId).unwrap()
     } catch (err) {
-      console.error('Error deleting post:', err)
+      console.error('Error deleting post [src/features/posts/ui/post/index.tsx]:', err)
     }
   }
 
