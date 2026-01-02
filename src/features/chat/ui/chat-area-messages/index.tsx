@@ -13,7 +13,6 @@ export const ChatAreaMessages = ({ selectedUser }: Props) => {
   const { data: chat } = useFetchUserChatQuery({ targetUserId: String(selectedUser?.id) || '0' })
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  // Автоматическая прокрутка к последнему сообщению
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [chat?.messages])
