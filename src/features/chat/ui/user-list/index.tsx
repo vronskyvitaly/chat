@@ -6,11 +6,15 @@ import { useParams } from 'next/navigation'
 
 type Props = {
   searchTerm: string
+  currentUserId?: number
 }
 
-export const UserList = ({ searchTerm }: Props) => {
+export const UserList = ({ searchTerm, currentUserId = 0 }: Props) => {
   const { data: users = [] } = useFetchUsersQuery()
-  const filteredUsers = useFilteredUsers(users, searchTerm as string)
+  const filteredUsers = useFilteredUsers(
+    users.filter(user => user.id !== currentUserId),
+    searchTerm as string
+  )
   const selectedUserId = useParams().id
 
   return (
