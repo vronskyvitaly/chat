@@ -34,7 +34,6 @@ const SignUpPage = () => {
 
     try {
       await signUpMutation(data).unwrap()
-      // Если регистрация успешна, перенаправляем на страницу входа
       router.push(PATH.SING_IN)
     } catch (err: unknown) {
       if (err && typeof err === 'object' && 'data' in err) {
