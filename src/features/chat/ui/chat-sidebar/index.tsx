@@ -4,8 +4,10 @@ import { useState } from 'react'
 import { useMeQuery } from '@/features/auth/api'
 
 export const ChatSidebar = () => {
-  useMeQuery()
+  const { data: user } = useMeQuery()
   const [searchTerm, setSearchTerm] = useState('')
+
+  if (!user) return null
 
   return (
     <div className='w-80 bg-white border-r border-gray-200 flex flex-col'>
@@ -14,7 +16,7 @@ export const ChatSidebar = () => {
       {/* Search */}
       <ChatSidebarSearchUserInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       {/* Users List */}
-      <UserList searchTerm={searchTerm} />
+      <UserList searchTerm={searchTerm} currentUserId={user.id} />
     </div>
   )
 }
