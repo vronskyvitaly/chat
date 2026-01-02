@@ -1,33 +1,22 @@
 'use client'
-
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { FaSpinner } from 'react-icons/fa'
+import { useEffect, useState } from 'react'
 import { PATH } from '@/common/constants'
 import { LoadingFullScreen } from '@/widgets/ui'
-import type { TCreatePostRequest } from '@/features/posts/types'
 import { PostsList } from '@/features/posts/ui/posts-list'
 import { useCreatePostMutation, useFetchPostsQuery } from '@/features/posts/api'
+import { useCreatePostForm } from '@/features/posts/ui/create-post-form/hook'
+import { CreatePostForm } from '@/features/posts/ui/create-post-form/ui'
+import type { TCreatePostValues } from '@/features/posts/ui/create-post-form/types'
 
 export default function PostsPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const { data: posts = [], isLoading, error: fetchError } = useFetchPostsQuery()
-  const [createPost, { isLoading: isCreating, error: createError }] = useCreatePostMutation()
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors }
-  } = useForm<TCreatePostRequest>({
-    defaultValues: {
-      title: '',
-      content: ''
-    }
-  })
+  const { data: posts = [], isLoading } = useFetchPostsQuery()
+  const [createPost, { isLoading: createPostIsLoading }] = useCreatePostMutation()
+  const { reset } = useCreatePostForm()
+  const [formKey, setFormKey] = useState(0)
 
   // Проверка сессии
   useEffect(() => {
@@ -36,26 +25,23 @@ export default function PostsPage() {
     }
   }, [status, router])
 
-  const onSubmit = async (data: TCreatePostRequest) => {
+  const onSubmit = async (data: TCreatePostValues) => {
     try {
       await createPost({
         title: data.title.trim(),
         content: data.content.trim()
       }).unwrap()
       reset()
-    } catch (err) {
-      console.error('Error creating post:', err)
+      setFormKey(prev => prev + 1)
+    } catch (error) {
+      console.log('Create post [src/common/pages/posts-page/index.tsx] onSubmit', error)
     }
   }
 
-  const error = createError || fetchError
-
-  // Показываем загрузку пока проверяем сессию
   if (status === 'loading') {
     return <LoadingFullScreen />
   }
 
-  // Если пользователь не авторизован, не показываем страницу
   if (status === 'unauthenticated') {
     return null
   }
@@ -98,74 +84,7 @@ export default function PostsPage() {
         </div>
 
         {/* Create Post Form */}
-        <div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8'>
-          <h2 className='text-xl font-semibold text-gray-900 dark:text-white mb-4'>Create New Post</h2>
-          <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
-            <div>
-              <label
-                htmlFor='title'
-                className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
-              >
-                Title
-              </label>
-              <input
-                id='title'
-                type='text'
-                {...register('title', {
-                  required: 'Title is required',
-                  minLength: {
-                    value: 3,
-                    message: 'Title must be at least 3 characters'
-                  }
-                })}
-                className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500'
-                placeholder='Enter post title'
-              />
-              {errors.title && (
-                <p className='mt-1 text-sm text-red-600 dark:text-red-400'>{errors.title.message}</p>
-              )}
-            </div>
-            <div>
-              <label
-                htmlFor='content'
-                className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1'
-              >
-                Content
-              </label>
-              <textarea
-                id='content'
-                {...register('content', {
-                  required: 'Content is required',
-                  minLength: {
-                    value: 10,
-                    message: 'Content must be at least 10 characters'
-                  }
-                })}
-                rows={4}
-                className='w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none'
-                placeholder='Write your post content...'
-              />
-              {errors.content && (
-                <p className='mt-1 text-sm text-red-600 dark:text-red-400'>{errors.content.message}</p>
-              )}
-            </div>
-
-            <button
-              type='submit'
-              disabled={isCreating}
-              className='flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium rounded-lg hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed transition-colors'
-            >
-              {isCreating ? (
-                <>
-                  <FaSpinner className='animate-spin' />
-                  Creating...
-                </>
-              ) : (
-                'Create Post'
-              )}
-            </button>
-          </form>
-        </div>
+        <CreatePostForm key={formKey} onSubmit={onSubmit} createPostIsLoading={createPostIsLoading} />
 
         {/* Posts List */}
         <div className='bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden'>
