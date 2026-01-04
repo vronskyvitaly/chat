@@ -27,6 +27,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         try {
           if (!credentials) return null
+          // user authorization without middleware
           const res = await axios.post(`${process.env.NEXT_PUBLIC_EXPRESS_SERVER}api/auth/login`, {
             email: credentials?.email,
             password: credentials?.password
@@ -35,8 +36,8 @@ export const authOptions: NextAuthOptions = {
           if (res) {
             return res.data
           }
-        } catch (e: unknown) {
-          console.log('error', e)
+        } catch (e) {
+          console.log('Error src/app/api/auth/[...nextauth]/auth-options.ts authorize function', e)
           return null
         }
       }
@@ -44,14 +45,13 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session }) {
-      // console.log('session 33', token)
       try {
-        // Получаем данные пользователя по email
-        const res = await axios.get<undefined, { data:  UserSession }>(
+        // We receive user data by email without middleware
+        const res = await axios.get<undefined, { data: UserSession }>(
           `${process.env.NEXT_PUBLIC_EXPRESS_SERVER}api/users/by-email/${session?.user?.email}`
         )
 
-        if (res.data !== undefined ) {
+        if (res.data !== undefined) {
           return {
             ...session,
             user: {
@@ -64,9 +64,11 @@ export const authOptions: NextAuthOptions = {
         } else {
           return session
         }
-
       } catch (e) {
-        console.error('Error fetching user data [auth-options-session]:', e)
+        console.log(
+          'Error fetching user data [src/app/api/auth/[...nextauth]/auth-options.ts] session function:',
+          e
+        )
         return session
       }
     },
@@ -82,8 +84,8 @@ export const authOptions: NextAuthOptions = {
   },
 
   session: {
-    // Установил количество дней для сессии
-    maxAge: 30 * 24 * 60 * 60, // 30 дней в секундах
-    updateAge: 24 * 60 * 60 // Обновление сессии каждые 24 часа
+    // Set the number of days for the session
+    maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
+    updateAge: 24 * 60 * 60 // Session update every 24 hours
   }
 }

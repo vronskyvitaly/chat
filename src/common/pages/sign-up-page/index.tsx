@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { FaArrowLeft, FaUser } from 'react-icons/fa'
 import { SignUpForm } from '@/features/auth/ui/sign-up-form/ui'
 import { useSignUpMutation } from '@/features/auth/api'
+import { AuthDecorativeElement, AuthHeader, AuthNavigation } from '@/common/components/ui'
+import Link from 'next/link'
 import type { TSignUpFormValues } from '@/features/auth/ui/sign-up-form/types'
 
 const SignUpPage = () => {
@@ -14,7 +16,6 @@ const SignUpPage = () => {
   const [signUpMutation] = useSignUpMutation()
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null)
 
-  // Очистка таймаута при размонтировании компонента
   useEffect(() => {
     return () => {
       if (timeoutId) {
@@ -66,51 +67,37 @@ const SignUpPage = () => {
     }
   }
 
-  const handleBackToLogin = () => {
-    router.push(PATH.SING_IN)
-  }
-
   return (
     <main className='flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-12 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900'>
       <div className='w-full max-w-md'>
         {/* Header */}
-        <div className='text-center mb-8'>
-          <div className='inline-flex items-center justify-center w-16 h-16 mb-4 bg-gradient-to-r from-green-500 to-blue-600 rounded-full'>
-            <FaUser className='w-8 h-8 text-white' />
-          </div>
-          <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-2'>Create Account</h1>
-          <p className='text-gray-600 dark:text-gray-400'>Join us to start chatting with friends</p>
-        </div>
+        <AuthHeader
+          title='Create Account'
+          subtitle='Join us to start chatting with friends'
+          icon={
+            <div className='inline-flex items-center justify-center w-16 h-16 mb-4 bg-gradient-to-r from-green-500 to-blue-600 rounded-full'>
+              <FaUser className='w-8 h-8 text-white' />
+            </div>
+          }
+        />
 
         {/* Back Button */}
-        <button
-          onClick={handleBackToLogin}
+        <Link
+          href={PATH.SING_IN}
           className='flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white mb-6 transition-colors'
         >
           <FaArrowLeft className='w-4 h-4' />
           <span className='text-sm font-medium'>Back to Sign In</span>
-        </button>
+        </Link>
 
         {/* Registration Form */}
         <SignUpForm onSubmit={onSubmit} error={error} isLoading={isLoading} />
 
-        {/* Footer */}
-        <div className='mt-8 text-center text-sm text-gray-600 dark:text-gray-400'>
-          <p>
-            Already have an account?{' '}
-            <button
-              onClick={handleBackToLogin}
-              className='font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300'
-            >
-              Sign in
-            </button>
-          </p>
-        </div>
+        {/* Sign in link */}
+        <AuthNavigation title='Already have an account' href={PATH.SING_IN} />
 
-        {/* Decorative Elements */}
-        <div className='mt-12 text-center text-xs text-gray-500 dark:text-gray-600'>
-          <p>Secure • Fast • Reliable</p>
-        </div>
+        {/* Decorative Element */}
+        <AuthDecorativeElement />
       </div>
     </main>
   )
