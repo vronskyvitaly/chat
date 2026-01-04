@@ -8,5 +8,5 @@ import { SessionProvider } from 'next-auth/react'
 import { ReactNode } from 'react'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  return <SessionProvider>{children}</SessionProvider>
+  return <SessionProvider baseUrl={process.env.NEXT_PUBLIC_EXPRESS_SERVER}>{children}</SessionProvider>
 }
