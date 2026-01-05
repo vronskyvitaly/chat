@@ -1,4 +1,3 @@
-// middleware/proxy.ts
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { getToken } from 'next-auth/jwt'
@@ -6,7 +5,6 @@ import { cookies } from 'next/headers'
 import { PATH } from '@/common/constants'
 
 export default async function proxy(req: NextRequest) {
-  // Получаем токен из next-auth
   const token = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET
@@ -18,7 +16,6 @@ export default async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL(PATH.SING_IN, req.nextUrl))
   }
 
-  // Получаем accessToken из сессии next-auth
   const accessToken = token.accessToken as string
   const refreshToken = token.refreshToken as string
   // const userId = token.sub // sub содержит userId
@@ -29,14 +26,7 @@ export default async function proxy(req: NextRequest) {
   cookieStore.set('refreshToken', `${refreshToken}`)
   cookieStore.set('userId', `${token.id}`)
 
-  // console.log('Access token:', accessToken)
-  // console.log('User ID:', userId)
-
-  return NextResponse.next({
-    // headers: {
-    //   authorization: `Bearer ${accessToken}`
-    // }
-  })
+  return NextResponse.next()
 }
 
 export const config = {
