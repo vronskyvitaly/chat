@@ -1,9 +1,8 @@
 'use client'
 import { FaEnvelope, FaLock, FaUser } from 'react-icons/fa'
 import { useState } from 'react'
-import { useSignUpForm } from '@/features/auth/ui/sign-up-form/hook'
-import type { TSignUpFormValues } from '@/features/auth/ui/sign-up-form/types'
 import { ShowPasswordIcon } from '@/common/assets/icons'
+import { type TSignUpFormValues, useSignUpForm } from '@/features/auth/ui'
 
 type Props = {
   onSubmit(data: TSignUpFormValues): void

@@ -3,10 +3,9 @@ import { useState } from 'react'
 import { PATH } from '@/common/constants'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { SignInForm } from '@/features/auth/ui/sign-in-form/ui'
 import { AuthDecorativeElement, AuthHeader, AuthNavigation, AuthSignInDivider } from '@/common/components/ui'
 import { GitHubSignInButton, GoogleSignInButton } from '@/features/auth/ui'
-import type { TSignInFormValues } from '@/features/auth/ui/sign-in-form/types'
+import { SignInForm, type TSignInFormValues } from '@/features/auth/ui'
 
 export default function SignInPage() {
   const [error, setError] = useState<string | null>(null)
@@ -14,7 +13,6 @@ export default function SignInPage() {
   const router = useRouter()
 
   const isLoading = loading
-  //
 
   const onSubmit = async (data: TSignInFormValues) => {
     setError(null)

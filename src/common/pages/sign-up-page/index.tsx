@@ -3,11 +3,10 @@ import { useEffect, useState } from 'react'
 import { PATH } from '@/common/constants'
 import { useRouter } from 'next/navigation'
 import { FaArrowLeft, FaUser } from 'react-icons/fa'
-import { SignUpForm } from '@/features/auth/ui/sign-up-form/ui'
 import { useSignUpMutation } from '@/features/auth/api'
 import { AuthDecorativeElement, AuthHeader, AuthNavigation } from '@/common/components/ui'
 import Link from 'next/link'
-import type { TSignUpFormValues } from '@/features/auth/ui/sign-up-form/types'
+import { SignUpForm, type TSignUpFormValues } from '@/features/auth/ui'
 
 const SignUpPage = () => {
   const router = useRouter()

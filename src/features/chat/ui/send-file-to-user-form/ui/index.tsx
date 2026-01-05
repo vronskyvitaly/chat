@@ -1,6 +1,6 @@
 import { FaImage } from 'react-icons/fa'
 import type { ChangeEvent } from 'react'
-import { ACCEPT_CONFIG_IMAGE } from '@/features/chat/ui/send-file-to-user-form/config'
+import { ACCEPT_CONFIG_IMAGE } from '@/features/chat/ui'
 
 type Props = {
   onFileChange: (e: ChangeEvent<HTMLInputElement>) => void
