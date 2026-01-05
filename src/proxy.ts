@@ -10,7 +10,7 @@ export default async function proxy(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET
   })
 
-  console.log('NextAuth token:', token)
+  // console.log('NextAuth token [src/proxy.ts]:', token)
 
   if (!token) {
     return NextResponse.redirect(new URL(PATH.SING_IN, req.nextUrl))
