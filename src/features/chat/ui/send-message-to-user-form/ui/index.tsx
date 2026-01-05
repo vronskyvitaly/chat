@@ -1,14 +1,13 @@
 'use client'
 import { FaPaperPlane } from 'react-icons/fa'
-import { useSendMessageToUserForm } from '@/features/chat/ui/send-message-to-user-form/hook'
 import type { TUser } from '@/features/users/types'
-import type { TSendMessageSchemaValues } from '@/features/chat/ui/send-message-to-user-form/types'
+import { type TSendMessageSchemaValues, useSendMessageToUserForm } from '@/features/chat/ui'
 
 export const SendMessageToUserForm = ({
   onSendMessage,
   selectedUser
 }: {
-  onSendMessage: (data: TSendMessageSchemaValues) => void
+  onSendMessage(data: TSendMessageSchemaValues): void
   selectedUser: TUser
 }) => {
   const {
@@ -21,7 +20,7 @@ export const SendMessageToUserForm = ({
   const onSubmit = (data: TSendMessageSchemaValues) => {
     if (data.content?.trim()) {
       onSendMessage(data)
-      reset() // Очистка формы после отправки
+      reset()
     }
   }
 

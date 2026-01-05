@@ -4,9 +4,8 @@ import { useState } from 'react'
 import { LoadingFullScreen } from '@/widgets/ui'
 import { useCreatePostMutation, useFetchPostsQuery } from '@/features/posts/api'
 import { useCreatePostForm } from '@/features/posts/ui/create-post-form/hook'
-import { CreatePostForm } from '@/features/posts/ui/create-post-form/ui'
 import { PostPageHeader, PostsListSection } from '@/features/posts/sections'
-import type { TCreatePostValues } from '@/features/posts/ui/create-post-form/types'
+import { CreatePostForm, type TCreatePostValues } from '@/features/posts/ui'
 
 export default function PostsPage() {
   const { data: session, status } = useSession()

@@ -1,6 +1,5 @@
 'use client'
-import { useCreatePostForm } from '@/features/posts/ui/create-post-form/hook'
-import type { TCreatePostValues } from '@/features/posts/ui/create-post-form/types'
+import { type TCreatePostValues, useCreatePostForm } from '@/features/posts/ui'
 
 type Props = {
   onSubmit(data: TCreatePostValues): void

@@ -1,4 +1,6 @@
 export * from './chat-sidebar-search-user-input'
+export * from './send-file-to-user-form'
+export * from './send-message-to-user-form'
 export * from './user-list'
 export * from './chat-sidebar-header'
 export * from './chat-area'

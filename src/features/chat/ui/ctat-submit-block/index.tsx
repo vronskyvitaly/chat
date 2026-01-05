@@ -1,12 +1,11 @@
-import { SendMessageToUserForm } from '@/features/chat/ui/send-message-to-user-form/ui'
-import { SendFileToUserForm } from '@/features/chat/ui/send-file-to-user-form/ui'
 import type { TUser } from '@/features/users/types'
-import type { TSendMessageSchemaValues } from '@/features/chat/ui/send-message-to-user-form/types'
 import type { ChangeEvent } from 'react'
+
+import { SendFileToUserForm, SendMessageToUserForm, type TSendMessageSchemaValues } from '@/features/chat/ui'
 
 type Props = {
   selectedUser: TUser
-  onSendMessageHandler: (data: TSendMessageSchemaValues) => void
+  onSendMessageHandler(data: TSendMessageSchemaValues): void
   onFileChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
