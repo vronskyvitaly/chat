@@ -39,10 +39,9 @@ const SignUpPage = () => {
     } catch (err: unknown) {
       if (err && typeof err === 'object' && 'data' in err) {
         const errorData = err as { data: { message?: string } }
-        // todo: 500 [client || server]
         const errorMessage =
-          errorData.data.message === 'Пользователь с таким email уже зарегистрирован'
-            ? 'A user with this email is already registered'
+          errorData.data.message === 'A user with this email is already registered'
+            ? errorData.data.message
             : 'Registration error'
         setError(errorMessage)
 
