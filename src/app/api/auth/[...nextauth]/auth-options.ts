@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
         try {
           if (!credentials) return null
           // user authorization without middleware
-          const res = await axios.post(`${process.env.NEXT_PUBLIC_EXPRESS_SERVER}api/auth/login`, {
+          const res = await axios.post(`${process.env.NEXT_PUBLIC_EXPRESS_SERVER}api/auth/sign-in`, {
             email: credentials?.email,
             password: credentials?.password
           })
