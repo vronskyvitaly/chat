@@ -14,7 +14,7 @@ export const SignUpForm = ({ onSubmit, error, isLoading }: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isValid, isDirty }
   } = useSignUpForm()
 
   const [showPassword, setShowPassword] = useState(false)
@@ -92,24 +92,7 @@ export const SignUpForm = ({ onSubmit, error, isLoading }: Props) => {
             disabled={isLoading}
             className='absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed'
           >
-            {showPassword ? (
-              <ShowPasswordIcon />
-            ) : (
-              <svg className='h-5 w-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'
-                />
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'
-                />
-              </svg>
-            )}
+            {showPassword ? <ShowPasswordIcon /> : <ShowPasswordIcon isShow={false} />}
           </button>
         </div>
         {errors.password && (
@@ -173,7 +156,7 @@ export const SignUpForm = ({ onSubmit, error, isLoading }: Props) => {
 
       <button
         type='submit'
-        disabled={isLoading}
+        disabled={isLoading || !isValid || !isDirty}
         className='w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white font-medium rounded-xl hover:from-green-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200'
       >
         {isLoading ? (
