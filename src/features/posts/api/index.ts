@@ -3,7 +3,6 @@ import { subscribeToEvent } from '@/common/socket'
 import { SOCKET_EVENT_POSTS } from '@/features/posts/constants'
 import type { TPost } from '@/features/posts/types'
 import { getCookie } from '@/common/utils/get-cookie'
-import type { TCreatePostValues } from '@/features/posts/ui/create-post-form/types'
 
 export const postsApi = baseApi.injectEndpoints({
   endpoints: build => ({
@@ -47,7 +46,7 @@ export const postsApi = baseApi.injectEndpoints({
         unsubscribe4()
       }
     }),
-    createPost: build.mutation<TPost, TCreatePostValues>({
+    createPost: build.mutation<TPost, FormData>({
       query: body => ({
         url: 'api/posts/add-post',
         method: 'POST',

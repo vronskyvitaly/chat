@@ -5,7 +5,7 @@ import { LoadingFullScreen } from '@/widgets/ui'
 import { useCreatePostMutation, useFetchPostsQuery } from '@/features/posts/api'
 import { useCreatePostForm } from '@/features/posts/ui/create-post-form/hook'
 import { PostPageHeader, PostsListSection } from '@/features/posts/sections'
-import { CreatePostForm, type TCreatePostValues } from '@/features/posts/ui'
+import { CreatePostForm } from '@/features/posts/ui'
 
 export default function PostsPage() {
   const { data: session, status } = useSession()
@@ -14,12 +14,9 @@ export default function PostsPage() {
   const { reset } = useCreatePostForm()
   const [formKey, setFormKey] = useState(0)
 
-  const onSubmit = async (data: TCreatePostValues) => {
+  const onSubmit = async (data: FormData) => {
     try {
-      await createPost({
-        title: data.title.trim(),
-        content: data.content.trim()
-      }).unwrap()
+      await createPost(data).unwrap()
       reset()
       setFormKey(prev => prev + 1)
     } catch (error) {
